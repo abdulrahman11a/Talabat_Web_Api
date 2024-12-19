@@ -8,7 +8,7 @@ using Talabat.core.IRepository;
 
 namespace Talabat.core.Repositories.Contract
 {
-    public interface IUnitOfWork: IAsyncDisposable
+    public interface IUnitOfWork: IAsyncDisposable,IDisposable
     {
         IGenaricRepository<TEntity> repository<TEntity>() where TEntity : BaseEntity;
 

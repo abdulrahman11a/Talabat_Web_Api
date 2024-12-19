@@ -8,8 +8,13 @@ namespace Talabat.core.IRepository
          Task< IReadOnlyList<T>> GetAllAsync(bool withNoTracking = true); 
          Task <T?> GetByIdAsync(int Id);
 
-         Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec, bool withNoTracking = true);
-         Task<T?> GetEntityWithSpec(ISpecification<T> spec);
+         Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecification<T> spec, bool withNoTracking = true);
+         Task<T?> GetEntityWithSpecAsync(ISpecification<T> spec);
         Task<int> GetCountAsync(ISpecification<T> spec);
+        Task AddAsync(T entity);
+
+        Task Delete(T entity);
+
+
     }
 }

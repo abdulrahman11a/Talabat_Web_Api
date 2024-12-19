@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Talabat.APIS.DTOs
+namespace Talabat.APIS.DTOs.Authntction
 {
     public class RegisterDTO
     {
@@ -8,9 +8,9 @@ namespace Talabat.APIS.DTOs
         [StringLength(50, ErrorMessage = "Display name must be between 2 and 50 characters.", MinimumLength = 2)]
         public string DisplayName { get; set; }
 
-        [Required]
-        [Phone(ErrorMessage = "Invalid phone number format.")]
-        public string PhoneNumber { get; set; }
+        //[Required]
+        //[Phone(ErrorMessage = "Invalid phone number format.")]
+        //public string PhoneNumber { get; set; }
 
         [Required]
         [EmailAddress(ErrorMessage = "Invalid email address format.")]

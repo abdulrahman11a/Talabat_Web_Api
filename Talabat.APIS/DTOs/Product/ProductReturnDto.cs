@@ -1,6 +1,6 @@
 ﻿using Talabat.core.Entites;
 
-namespace Talabat.APIS.DTOs
+namespace Talabat.APIS.DTOs.ProductDto
 {
     public class ProductReturnDto
     {

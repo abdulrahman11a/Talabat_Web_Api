@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Talabat.APIS.DTOs
+namespace Talabat.APIS.DTOs.Authntction
 {
     public class UserDTO
     {

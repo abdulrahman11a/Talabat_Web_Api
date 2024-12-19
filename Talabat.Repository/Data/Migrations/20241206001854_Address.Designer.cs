@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Talabat.Repository.Data;
 
 #nullable disable
 
-namespace Talabat.Repository.Data.Migrations
+namespace Talabat.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreDbcontext))]
-    partial class StoreDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20241206001854_Address")]
+    partial class Address
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,6 +230,10 @@ namespace Talabat.Repository.Data.Migrations
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
 
+                            b1.Property<string>("AppUserId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
@@ -238,6 +245,9 @@ namespace Talabat.Repository.Data.Migrations
                             b1.Property<string>("FirastName")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()

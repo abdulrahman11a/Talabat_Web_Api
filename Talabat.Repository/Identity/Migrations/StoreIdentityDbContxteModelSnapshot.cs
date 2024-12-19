@@ -192,7 +192,7 @@ namespace Talabat.Infrastructure.Identity.Migrations
                     b.HasIndex("AppUserId")
                         .IsUnique();
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("Talabat.core.Entitys.Identity.AppUser", b =>

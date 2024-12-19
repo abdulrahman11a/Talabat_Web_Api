@@ -8,14 +8,14 @@ using Talabat.core.Entitys.Order_Aggregate.Enum_Order_Aggregate;
 
 namespace Talabat.core.Entitys.Order_Aggregate
 {
-    public  class Order:BaseEntity 
+    public  class Order :BaseEntity 
     {
         public Order()
         {
             
         }
         public Order(string buyerEmail, Address shippingAddress, decimal tax, decimal discount, 
-                    DeliveryMethod deliveryMethod, ICollection<OrderItem> items,decimal subTotal, string currency = "USD")
+                    DeliveryMethod deliveryMethod, ICollection<OrderItem> items,decimal subTotal,string  _paymentInterntId, string currency = "USD")
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
@@ -25,26 +25,29 @@ namespace Talabat.core.Entitys.Order_Aggregate
             DeliveryMethod = deliveryMethod;
             Items = items;
             SubTotal = subTotal;
+            paymentInterntId=_paymentInterntId;
         }
 
         public string BuyerEmail { get; set; } 
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.UtcNow;
-        public OrderStatus orderStatus { get; set; }
+        public OrderStatus orderStatus { get; set; } = OrderStatus.Pending;
         public Address ShippingAddress { get; set; }
 
         public string Currency { get; set; } = "USD";
 
-        public decimal Tax { get; set; }
+
+        public decimal Tax { get; set; }    
+
         public decimal Discount { get; set; }
         public DeliveryMethod DeliveryMethod  { get; set; }
         public  ICollection<OrderItem> Items { get; set; }
         public decimal SubTotal { get; set; }
      
-        public decimal GetTotal() => (DeliveryMethod?.Cost ?? 0) + SubTotal + Tax - Discount;
+        public decimal GetTotal() => (DeliveryMethod?.Cost ?? 0) + SubTotal + Tax;
 
         public decimal GetTotalAfterDiscount() => GetTotal() - Discount;
 
-        public string paymentInterntId { get; set; } =string.Empty;
+        public string paymentInterntId { get; set; }
 
 
 

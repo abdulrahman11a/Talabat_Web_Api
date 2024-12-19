@@ -12,7 +12,7 @@
             set { pageSize = value > MaxpageSize ? MaxpageSize : value; }
         }
         public int PageIndex { get; set; } = 1;
-        public string? Sort { get; set; }        
+        public string? sort { get; set; }        
         public int? BrandId { get; set; }    
         public int? TypeId { get; set; }    
         public int? Take { get; set; }

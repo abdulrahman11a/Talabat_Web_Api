@@ -1,30 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Talabat.APIS.DTOs.NewFolder;
 using Talabat.APIS.Errors;
 using Talabat.core.Entitys;
 using Talabat.core.Repositories.Contract;
 
 namespace Talabat.APIS.Controllers
 {
-
-    public class BasketController(IBasketRepository basket): ApiBaseController
+    public class BasketController(IBasketRepository basket,IMapper _mapper): ApiBaseController
     {
         //Get => Recreate OR Create
 
-        [HttpGet]   
-        public async Task<ActionResult<CustomerBasket>> GetCustomerBasket(string BasketId)
+        [HttpGet("{id}") ]   
+        public async Task<ActionResult<CustomerBasket>> GetCustomerBasket(string id)
         {
-            if (BasketId is null) return BadRequest(new ApiResponse(400, "INVALID"));
-           var baket= await basket.GetBasketAsync(BasketId);
-            if (baket == null) return new CustomerBasket(BasketId);//this mean if Null time of Basket is end will ReCreate
-            return Ok(baket);
+           var baket= await basket.GetBasketAsync(id);
+            return Ok(baket?? new CustomerBasket(id));//this mean if Null time of Basket is end will ReCreate
 
         }
         [HttpPost]
-        public async Task<ActionResult<CustomerBasket>> UpdateCustomerBasket(CustomerBasket customerBasket)
+        public async Task<ActionResult<CustomerBasketDto>> UpdateCustomerBasket(CustomerBasketDto customerBasket)
         {
-           var baketUpdateOrCreate= await basket.UpdateBasketAsync(customerBasket);   
-
-            return baketUpdateOrCreate is null ? BadRequest (new ApiResponse(400)):Ok(baketUpdateOrCreate);
+            var customerbasket = _mapper.Map<CustomerBasket>(customerBasket);
+            var baketUpdateOrCreate= await basket.UpdateBasketAsync(customerbasket);
+            var Dto=_mapper.Map<CustomerBasketDto>(baketUpdateOrCreate);
+            return baketUpdateOrCreate is null ? BadRequest (new ApiResponse(400)):Ok(Dto);
 
         }
         [HttpDelete]

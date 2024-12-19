@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Talabat.core.Entitys.Order_Aggregate;
+using Talabat.core.Entitys.Identity;
 using Talabat.core.IRepository;
 
 namespace Talabat.Infrastructure.Identity.Data

@@ -20,13 +20,17 @@ namespace Talabat.Repository
 
             return dbcontext.Set<T>().ToList();
         }
-        public async Task<T?> GetByIdAsync(int Id)
-          =>  await dbcontext.Set<T>().FindAsync(Id);
+        public async Task<T?> GetByIdAsync(int id)
+          =>  await dbcontext.Set<T>().FindAsync(id);
+
+        //public async Task<T?> GetByIdAsync(int id)
+        //{
+        //    return await _dbcontext.Set<T>().FindAsync(id);
+        //}
 
 
 
-
-        public async Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec, bool withNoTracking = true)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecification<T> spec, bool withNoTracking = true)
         {
             if (withNoTracking)
             {
@@ -42,7 +46,7 @@ namespace Talabat.Repository
         }
 
 
-        public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
+        public async Task<T?> GetEntityWithSpecAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
@@ -53,7 +57,12 @@ namespace Talabat.Repository
             return SpacificationEvaluator<T>.GetQuery(dbcontext.Set<T>().AsQueryable(), spec);
         }
 
-     
+        public async Task AddAsync(T entity)
+           => await  dbcontext.AddAsync(entity);
+
+        public Task Delete(T entity) => Delete(entity);
+       
     }
+
 
 }

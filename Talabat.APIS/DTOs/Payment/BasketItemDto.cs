@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Talabat.core.Entitys
+namespace Talabat.APIS.DTOs.NewFolder
 {
-     public class BasketItem
+    public class BasketItemDto
     {
+
+        [Required]
         public int Id { get; set; }
+        [Required]
+
         public string ProductName { get; set; }
+       
         public string PictureUrl { get; set; }
         public string Brand { get; set; }
         public string Category { get; set; }

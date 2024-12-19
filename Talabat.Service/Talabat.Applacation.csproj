@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Stripe.net" Version="47.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Talabat.core\Talabat.core.csproj" />
   </ItemGroup>
-
 </Project>

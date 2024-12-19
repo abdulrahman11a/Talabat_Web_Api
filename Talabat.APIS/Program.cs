@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Data;
@@ -10,10 +11,9 @@ using System.Text.Json;
 using Talabat.APIS.Errors;
 using Talabat.APIS.Helper;
 using Talabat.Applacation;
-using Talabat.core.Entitys.Order_Aggregate;
+using Talabat.core.Entitys.Identity;
 using Talabat.core.IRepository;
 using Talabat.core.Repositories.Contract;
-using Talabat.core.Services;
 using Talabat.core.Services.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Identity.Data;
@@ -31,7 +31,11 @@ namespace Talabat.APIS
 
             #region configuring services container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -53,6 +57,7 @@ namespace Talabat.APIS
 
             });
 
+           
 
 
 
@@ -61,38 +66,64 @@ namespace Talabat.APIS
 
 
 
+            builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+            builder.Services.AddScoped(typeof(ITaxRegion), typeof(TaxRegionService));
+            builder.Services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+            
+             builder.Services.AddScoped(typeof (IproductService),typeof(productService));
+
+            builder.Services.AddScoped(typeof(IDiscount), typeof(DiscountService));
             builder.Services.AddScoped(typeof(IToken), typeof(TokenServices));
-            builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));
+            builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+           builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));//{{ not need inject GenaricRepository if use ==>UnitOfWork because I'm create manual in class UnitOfWork}}
             builder.Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             builder.Services.AddIdentity<AppUser, IdentityRole>()//this Add 3 types  UserManager<AppUser>, RoleManager<IdentityRole>, and SignInManager<AppUser>.
                 .AddEntityFrameworkStores<AppIdentitystoreDbcontxt>();//Internally, this adds implementations for interfaces like:
                                                                       //IUserStore<AppUser>: To manage user persistence.IRoleStore<IdentityRole>:
                                                                       //To manage role persistence.
             builder.Services.AddAutoMapper(typeof(MappProfile));
-            builder.Services.Configure<ApiBehaviorOptions> (op=>
+            builder.Services.AddCors(Options =>
             {
-                op.InvalidModelStateResponseFactory = context =>
+
+
+                Options.AddPolicy("MyPolicy", options =>
                 {
 
+                    options.AllowAnyHeader();
+                    options.AllowAnyMethod();
+                    options.WithOrigins(builder.Configuration["frontBasUrLPolicy"]);
 
-                    var Errors = context.ModelState.Where(e=>e.Value.Errors.Count>0)
-                    .SelectMany(e=>e.Value.Errors).Select(e=>e.ErrorMessage).ToList();
+                });
 
 
-                    var response= new ApiValadationErorr() { errors = Errors };
-
-
-                    return new BadRequestObjectResult(response);    
-                };
             });
+            #region Response evrye end point if Model stae invalid
+            builder.Services.Configure<ApiBehaviorOptions>(op =>
+          {
+              op.InvalidModelStateResponseFactory = context =>
+              {
 
+
+                  var Errors = context.ModelState.Where(e => e.Value.Errors.Count > 0)
+                  .SelectMany(e => e.Value.Errors).Select(e => e.ErrorMessage).ToList();
+
+
+                  var response = new ApiValadationErorr() { errors = Errors };
+
+
+                  return new BadRequestObjectResult(response);
+              };
+          });
+
+            #endregion
 
 
 
             builder.Services.AddAuthentication(Options =>
             {
                 Options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//   
+
 
 
 
@@ -200,7 +231,7 @@ namespace Talabat.APIS
          //   app.UseStatusCodePagesWithRedirects("/Error/{0}");//this Send Two Request first go to Action not found secunde redirect Controller
             app.UseStatusCodePagesWithReExecute("/Error/{0}");// this Send one Request  ReExecute is not  found Action secunde redirect
             app.UseStaticFiles();
-
+            app.UseCors("MyPolicy");
             app.UseRouting();
             app.MapControllers();
             app.UseAuthentication();

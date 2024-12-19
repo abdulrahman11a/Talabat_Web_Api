@@ -22,7 +22,10 @@ namespace Talabat.core.Specifications
         public int Skip { get; set; }
         public bool IsPaginationEnabled { get; set; }
 
+        public BaseSpecification()
+        {
 
+        }
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria; 

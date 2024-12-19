@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using Talabat.APIS.DTOs;
+using Talabat.APIS.DTOs.ProductDto;
 using Talabat.core.Entites;
 
 namespace Talabat.APIS.Helper

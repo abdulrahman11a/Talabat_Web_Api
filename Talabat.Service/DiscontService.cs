@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Talabat.core.Entitys.Order_Aggregate.Enum_Order_Aggregate;
+﻿using Talabat.core.Entitys.Order_Aggregate.Enum_Order_Aggregate;
 using Talabat.core.Services.Contract;
 
 namespace Talabat.Applacation
 {
-    internal class DiscountService : IDiscount
+    public class DiscountService : IDiscount
     {
         public decimal ApplyDiscount(Discount discount, decimal subTotal, bool isMember = false)
         {

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Talabat.core.Entites.Common;
 using Talabat.core.Specifications;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Talabat.Infrastructure
 {

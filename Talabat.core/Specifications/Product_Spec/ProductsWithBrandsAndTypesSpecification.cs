@@ -12,7 +12,7 @@ namespace Talabat.core.Specifications.Product_Spec
                 (!specparams.TypeId.HasValue || p.ProductTypeId == specparams.TypeId)
             )
         {
-            switch (specparams.Sort)
+            switch (specparams.sort)
             {
                 case "NameAsc":
                     ApplyOrderBy(x => x.Name); // Ascending by Name
